@@ -1,0 +1,7 @@
+D:\DS97982\Postfix\Postfix\bin\Debug\Postfix.exe.config
+D:\DS97982\Postfix\Postfix\bin\Debug\Postfix.exe
+D:\DS97982\Postfix\Postfix\bin\Debug\Postfix.pdb
+D:\DS97982\Postfix\Postfix\obj\Debug\Postfix.csprojAssemblyReference.cache
+D:\DS97982\Postfix\Postfix\obj\Debug\Postfix.csproj.CoreCompileInputs.cache
+D:\DS97982\Postfix\Postfix\obj\Debug\Postfix.exe
+D:\DS97982\Postfix\Postfix\obj\Debug\Postfix.pdb

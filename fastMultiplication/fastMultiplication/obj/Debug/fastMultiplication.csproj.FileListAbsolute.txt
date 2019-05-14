@@ -1,0 +1,7 @@
+D:\DS97982\fastMultiplication\fastMultiplication\bin\Debug\fastMultiplication.exe.config
+D:\DS97982\fastMultiplication\fastMultiplication\bin\Debug\fastMultiplication.exe
+D:\DS97982\fastMultiplication\fastMultiplication\bin\Debug\fastMultiplication.pdb
+D:\DS97982\fastMultiplication\fastMultiplication\obj\Debug\fastMultiplication.csprojAssemblyReference.cache
+D:\DS97982\fastMultiplication\fastMultiplication\obj\Debug\fastMultiplication.csproj.CoreCompileInputs.cache
+D:\DS97982\fastMultiplication\fastMultiplication\obj\Debug\fastMultiplication.exe
+D:\DS97982\fastMultiplication\fastMultiplication\obj\Debug\fastMultiplication.pdb

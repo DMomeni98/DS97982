@@ -1,0 +1,7 @@
+D:\DS97982\non-recursive-QuickSort\non-recursive-QuickSort\bin\Debug\non-recursive-QuickSort.exe.config
+D:\DS97982\non-recursive-QuickSort\non-recursive-QuickSort\bin\Debug\non-recursive-QuickSort.exe
+D:\DS97982\non-recursive-QuickSort\non-recursive-QuickSort\bin\Debug\non-recursive-QuickSort.pdb
+D:\DS97982\non-recursive-QuickSort\non-recursive-QuickSort\obj\Debug\non-recursive-QuickSort.csprojAssemblyReference.cache
+D:\DS97982\non-recursive-QuickSort\non-recursive-QuickSort\obj\Debug\non-recursive-QuickSort.csproj.CoreCompileInputs.cache
+D:\DS97982\non-recursive-QuickSort\non-recursive-QuickSort\obj\Debug\non-recursive-QuickSort.exe
+D:\DS97982\non-recursive-QuickSort\non-recursive-QuickSort\obj\Debug\non-recursive-QuickSort.pdb

@@ -1,0 +1,7 @@
+D:\DS97982\determinant\determinant\bin\Debug\determinant.exe.config
+D:\DS97982\determinant\determinant\bin\Debug\determinant.exe
+D:\DS97982\determinant\determinant\bin\Debug\determinant.pdb
+D:\DS97982\determinant\determinant\obj\Debug\determinant.csprojAssemblyReference.cache
+D:\DS97982\determinant\determinant\obj\Debug\determinant.csproj.CoreCompileInputs.cache
+D:\DS97982\determinant\determinant\obj\Debug\determinant.exe
+D:\DS97982\determinant\determinant\obj\Debug\determinant.pdb
