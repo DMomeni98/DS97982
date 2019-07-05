@@ -17,7 +17,9 @@ namespace Huffman_Compression
             newFile.PrintCharsCountDictionary();
             newFile.PrintTree();
             newFile.PrintCharsCodeDictionary();
-
+            string fileToDecode = "result.txt";
+            Decode decode = new Decode(fileToDecode);
+            decode.decodeToString();
         }
 
     }
