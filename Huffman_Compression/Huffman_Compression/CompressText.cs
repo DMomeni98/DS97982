@@ -12,12 +12,15 @@ namespace Huffman_Compression
         public CompressText(string filePath)
         {
             RawFilePath = filePath;
+            EncodedFilePath = RawFilePath.Remove(RawFilePath.IndexOf(".txt")) + "_encoded";
             //this.CharsCountDictionary = new Dictionary<char, int>();
             //this.CharsCodeDictionary = new Dictionary<char, string>();
             //this.Root = new Node();
         }
 
         private string RawFilePath;
+
+        private string EncodedFilePath;
 
         private Node Root;
 
@@ -119,7 +122,8 @@ namespace Huffman_Compression
 
         private void Encode()
         {
-            StreamWriter write = new StreamWriter("result1_doc.txt", false,Encoding.ASCII);
+            
+            StreamWriter write = new StreamWriter(EncodedFilePath+"Doc.txt", false,Encoding.ASCII);
             foreach (var item in CharsCodeDictionary)
                 write.WriteLine(item.Key + ":" + item.Value);
             write.WriteLine("_end_");
@@ -127,7 +131,7 @@ namespace Huffman_Compression
             write.Dispose();
             using (StreamReader read = new StreamReader(RawFilePath))
             {
-                using (StreamWriter writer = new StreamWriter(File.Open("result", FileMode.Create)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(EncodedFilePath + ".bin", FileMode.Create)))
                 { 
                     string line;
                     while ((line = read.ReadLine()) != null)
