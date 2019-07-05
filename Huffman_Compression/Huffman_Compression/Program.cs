@@ -11,12 +11,19 @@ namespace Huffman_Compression
     {
         static void Main(string[] args)
         {
-            string filePath = @"for_esme.txt";
-            CompressText newFile = new CompressText(filePath);
-            newFile.Compress();
-            newFile.PrintCharsCountDictionary();
-            //newFile.PrintTree();
-            newFile.PrintCharsCodeDictionary();
+            string filePath = args[0];
+            if (args[1] =="-compress")
+            {
+                CompressText newFile = new CompressText(filePath);
+                newFile.Compress();
+                newFile.PrintCharsCountDictionary();
+                //newFile.PrintTree();
+                newFile.PrintCharsCodeDictionary();
+            }
+            if (args[1] == "-decode")
+            {
+                //
+            }
 
         }
 

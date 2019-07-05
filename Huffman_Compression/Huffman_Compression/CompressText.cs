@@ -127,14 +127,14 @@ namespace Huffman_Compression
             write.Dispose();
             using (StreamReader read = new StreamReader(RawFilePath))
             {
-                using (BinaryWriter binWriter = new BinaryWriter(File.Open("result", FileMode.Create)))
+                using (StreamWriter writer = new StreamWriter(File.Open("result", FileMode.Create)))
                 { 
                     string line;
                     while ((line = read.ReadLine()) != null)
                     {
                         for (int i = 0; i < line.Length; i++)
                         {
-                            binWriter.Write(CharsCodeDictionary[line[i]]);
+                            writer.Write(CharsCodeDictionary[line[i]]);
                         }
                     }
                 }
