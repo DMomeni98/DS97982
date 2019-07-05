@@ -31,7 +31,7 @@ namespace Huffman_Compression
             List<Node> tree = ConvertToTree(this.CharsCountDictionary);
             this.Root = BuildHuffmanTree(tree);
             this.CharsCodeDictionary = FindCharsHuffmanCode(this.Root);
-            CompressFile();
+            Encode();
         }
 
         private static Dictionary<char, int> BuildCharsDictionary(string filePath)
@@ -117,18 +117,24 @@ namespace Huffman_Compression
             return dictionary;
         }
 
-        private void CompressFile()
+        private void Encode()
         {
+            StreamWriter write = new StreamWriter("result1_doc.txt", false,Encoding.ASCII);
+            foreach (var item in CharsCodeDictionary)
+                write.WriteLine(item.Key + ":" + item.Value);
+            write.WriteLine("_end_");
+            write.Close();
+            write.Dispose();
             using (StreamReader read = new StreamReader(RawFilePath))
             {
-                using (StreamWriter write = new StreamWriter("result.txt"))
-                {
+                using (BinaryWriter binWriter = new BinaryWriter(File.Open("result", FileMode.Create)))
+                { 
                     string line;
                     while ((line = read.ReadLine()) != null)
                     {
                         for (int i = 0; i < line.Length; i++)
                         {
-
+                            binWriter.Write(CharsCodeDictionary[line[i]]);
                         }
                     }
                 }
