@@ -11,33 +11,25 @@ namespace Huffman_Compression
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            string filePath = args[0];
-            if (args[1] =="-compress")
-            {
-                CompressText newFile = new CompressText(filePath);
-                newFile.Compress();
-                newFile.PrintCharsCountDictionary();
-                //newFile.PrintTree();
-                newFile.PrintCharsCodeDictionary();
-            }
-            if (args[1] == "-decode")
-            {
-                //
-            }
-
-=======
-            string filePath = @"sample1.txt";
-            CompressText newFile = new CompressText(filePath);
+            //string filePath = args[0];
+            //if (args[1] =="-compress")
+            //{
+            //    CompressText newFile = new CompressText(filePath);
+            //    newFile.Compress();
+            //    newFile.PrintCharsCountDictionary();
+            //    //newFile.PrintTree();
+            //    newFile.PrintCharsCodeDictionary();
+            //}
+            //if (args[1] == "-decode")
+            //{
+            //    string fileToDecode = "result.txt";
+            //    Decode decode = new Decode(fileToDecode);
+            //    decode.decodeToString();
+            CompressText newFile = new CompressText("sample1.txt");
             newFile.Compress();
             newFile.PrintCharsCountDictionary();
-            newFile.PrintTree();
             newFile.PrintCharsCodeDictionary();
-            string fileToDecode = "result.txt";
-            Decode decode = new Decode(fileToDecode);
-            decode.decodeToString();
->>>>>>> bc2be84c5407f16907b0822af0d92023fb53d9bd
+            newFile.PrintTree();
         }
-
     }
 }

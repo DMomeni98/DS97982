@@ -24,9 +24,9 @@ namespace Huffman_Compression
 
         private Node Root;
 
-        private Dictionary<char, int> CharsCountDictionary;
+        private Dictionary<int, int> CharsCountDictionary;
 
-        private Dictionary<char, string> CharsCodeDictionary;
+        private Dictionary<int, string> CharsCodeDictionary;
 
         public void Compress()
         {
@@ -34,24 +34,23 @@ namespace Huffman_Compression
             List<Node> tree = ConvertToTree(this.CharsCountDictionary);
             this.Root = BuildHuffmanTree(tree);
             this.CharsCodeDictionary = FindCharsHuffmanCode(this.Root);
-            Encode();
+            int lastByteLength=Encode();
+            CreateDecodingDoc(lastByteLength);
         }
 
-        private static Dictionary<char, int> BuildCharsDictionary(string filePath)
+        private static Dictionary<int, int> BuildCharsDictionary(string filePath)
         {
-            Dictionary<char, int> dictionary = new Dictionary<char, int>();
+            Dictionary<int, int> dictionary = new Dictionary<int, int>();
             using (StreamReader reader = new StreamReader(filePath))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                int temp;
+                while (!reader.EndOfStream)
                 {
-                    for (int i = 0; i < line.Length; i++)
-                    {
-                        if (dictionary.ContainsKey(line[i]))
-                            dictionary[line[i]]++;
+                    temp = reader.Read();
+                        if (dictionary.ContainsKey(temp))
+                            dictionary[temp]++;
                         else
-                            dictionary.Add(line[i], 1);
-                    }
+                            dictionary.Add(temp, 1);
                 }
 
             }
@@ -59,12 +58,12 @@ namespace Huffman_Compression
                 ToDictionary(x => x.Key, y => y.Value);
         }
         
-        private static List<Node> ConvertToTree(Dictionary<char, int> charsDictionary)
+        private static List<Node> ConvertToTree(Dictionary<int, int> charsDictionary)
         {
             List<Node> tree = new List<Node>();
             foreach (var item in charsDictionary)
             {
-                Node node = new Node(item.Key.ToString(), item.Value);
+                Node node = new Node(((char)item.Key).ToString(), item.Value);
                 tree.Add(node);
             }
             return tree;
@@ -93,9 +92,9 @@ namespace Huffman_Compression
             return tree[0];
         }
 
-        private Dictionary<char, string> FindCharsHuffmanCode(Node root)
+        private Dictionary<int, string> FindCharsHuffmanCode(Node root)
         {
-            Dictionary<char, string> dictionary = new Dictionary<char, string>();
+            Dictionary<int, string> dictionary = new Dictionary<int, string>();
             Queue<Node> queue = new Queue<Node>();
             queue.Enqueue(root);
             Node node;
@@ -115,34 +114,68 @@ namespace Huffman_Compression
                     queue.Enqueue(node.Right);
                 }
                 if (node.IsLeaf())
-                    dictionary.Add(char.Parse(node.Key), node.HuffmanCode);
+                    dictionary.Add((int)char.Parse(node.Key), node.HuffmanCode);
             }
             return dictionary;
         }
 
-        private void Encode()
+        private int Encode()
         {
-            
+            int lastByteLength;
+            using (StreamReader read = new StreamReader(RawFilePath))
+            {
+                using (BinaryWriter writer = new BinaryWriter(File.Open(EncodedFilePath + ".bin", FileMode.Create)))
+                { 
+                    int temp;
+                    StringBuilder byteBuilder = new StringBuilder(8);
+
+                    while (!read.EndOfStream)
+                    {
+                        temp = read.Read();
+                        StringBuilder charCode = new StringBuilder(CharsCodeDictionary[temp]);
+                        while (charCode !=null)
+                        {
+                            if (byteBuilder.Length == 8)
+                            {
+                                writer.Write(byteBuilder.ToString());
+                                byteBuilder.Clear();
+                            }
+                            if (byteBuilder.Length + charCode.Length <= 8)
+                            {
+                                byteBuilder.Append(charCode);
+                                charCode = null;
+                            }
+                            else
+                            {
+                                int length = 8 - byteBuilder.Length;
+                                byteBuilder.Append(charCode.ToString().Substring(0,length));
+                                writer.Write(byteBuilder.ToString());
+                                byteBuilder.Clear();
+                                charCode.Remove(0, length);
+                            }
+                        }
+                    }
+                    lastByteLength = byteBuilder.Length < 8 ? byteBuilder.Length : 8;
+                    while (byteBuilder.Length<8)
+                    {
+                        byteBuilder.Append(0);
+                    }
+                    writer.Write(byteBuilder.ToString());
+                    byteBuilder.Clear();
+                }
+            }
+            return lastByteLength;
+        }
+
+        private void CreateDecodingDoc(int lastByteLength)
+        {
             StreamWriter write = new StreamWriter(EncodedFilePath+"Doc.txt", false,Encoding.ASCII);
+            write.WriteLine(lastByteLength);
             foreach (var item in CharsCodeDictionary)
                 write.WriteLine(item.Key + ":" + item.Value);
             write.WriteLine("_end_");
             write.Close();
             write.Dispose();
-            using (StreamReader read = new StreamReader(RawFilePath))
-            {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(EncodedFilePath + ".bin", FileMode.Create)))
-                { 
-                    string line;
-                    while ((line = read.ReadLine()) != null)
-                    {
-                        for (int i = 0; i < line.Length; i++)
-                        {
-                            writer.Write(CharsCodeDictionary[line[i]]);
-                        }
-                    }
-                }
-            }
         }
 
         public void PrintTree()
@@ -182,7 +215,7 @@ namespace Huffman_Compression
         {
             Console.WriteLine("chars count:");
             foreach (var item in this.CharsCountDictionary)
-                Console.Write(item.Key + ":\t" + item.Value + "\n");
+                Console.Write((char)item.Key + ":\t" + item.Value + "\n");
             Console.WriteLine("total count: " + this.CharsCountDictionary.Sum(x => x.Value));
             Console.WriteLine("_____end_____\n");
         }
@@ -191,7 +224,7 @@ namespace Huffman_Compression
         {
             Console.WriteLine("chars Huffman code: ");
             foreach (var item in this.CharsCodeDictionary)
-                Console.Write(item.Key + ":\t" + item.Value + "\n");
+                Console.Write((char)item.Key + ":\t" + item.Value + "\n");
             Console.WriteLine("_____end_____\n");
         }
     }
