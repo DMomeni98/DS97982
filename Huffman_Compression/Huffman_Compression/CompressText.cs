@@ -137,23 +137,24 @@ namespace Huffman_Compression
                         {
                             if (byteBuilder.Length == 8)
                             {
-                                writer.Write(byteBuilder.ToString());
+                                writer.Write(Encoding.ASCII.GetBytes(byteBuilder.ToString()));
                                 byteBuilder.Clear();
                             }
                             if (byteBuilder.Length + charCode.Length <= 8)
                             {
                                 byteBuilder.Append(charCode);
-                                charCode = null;
+                                charCode.Clear();
                             }
                             else
                             {
                                 int length = 8 - byteBuilder.Length;
                                 byteBuilder.Append(charCode.ToString().Substring(0,length));
-                                writer.Write(byteBuilder.ToString());
+                                writer.Write(Encoding.ASCII.GetBytes(byteBuilder.ToString()));
                                 byteBuilder.Clear();
                                 charCode.Remove(0, length);
                             }
                         }
+                        charCode.Clear();
                     }
                     lastByteLength = byteBuilder.Length < 8 ? byteBuilder.Length : 8;
                     while (byteBuilder.Length<8)
