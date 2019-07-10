@@ -122,49 +122,55 @@ namespace Huffman_Compression
         private int Encode()
         {
             int lastByteLength;
+            List<byte> byteListToWrite = new List<byte>();
             using (StreamReader read = new StreamReader(RawFilePath))
             {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(EncodedFilePath + ".bin", FileMode.Create)))
-                { 
-                    int temp;
-                    StringBuilder byteBuilder = new StringBuilder(8);
 
-                    while (!read.EndOfStream)
+                    int temp;
+                    StringBuilder byteBuilder = new StringBuilder();
+
+                while (!read.EndOfStream)
+                {
+                    temp = read.Read();
+                    Console.WriteLine(temp);
+                    StringBuilder charCode = new StringBuilder(CharsCodeDictionary[temp]);
+                    Console.WriteLine(charCode);
+                    while (charCode != null)
                     {
-                        temp = read.Read();
-                        StringBuilder charCode = new StringBuilder(CharsCodeDictionary[temp]);
-                        while (charCode !=null)
+                        byteBuilder.Append(charCode);
+                        charCode = null;
+                        if (byteBuilder.Length >= 8)
                         {
-                            if (byteBuilder.Length == 8)
-                            {
-                                writer.Write(Encoding.ASCII.GetBytes(byteBuilder.ToString()));
-                                byteBuilder.Clear();
-                            }
-                            if (byteBuilder.Length + charCode.Length <= 8)
-                            {
-                                byteBuilder.Append(charCode);
-                                charCode.Clear();
-                            }
-                            else
-                            {
-                                int length = 8 - byteBuilder.Length;
-                                byteBuilder.Append(charCode.ToString().Substring(0,length));
-                                writer.Write(Encoding.ASCII.GetBytes(byteBuilder.ToString()));
-                                byteBuilder.Clear();
-                                charCode.Remove(0, length);
-                            }
+                            Console.WriteLine("oooooooooooooooooooooooooooooooooooo");
+                            byte byteToWrite = Convert.ToByte(byteBuilder.ToString().Substring(0, 8), 2);
+                            Console.WriteLine(byteBuilder.ToString().Substring(0, 8));
+                            byteListToWrite.Add(byteToWrite);
+                            string s = byteBuilder.ToString().Substring(8);
+                            byteBuilder.Clear();
+                            byteBuilder.Append(s);
+
                         }
-                        charCode.Clear();
+
+                        //else
+                        //{
+                        //    int length = 8 - byteBuilder.Length;
+                        //    byteBuilder.Append(charCode.ToString().Substring(0, length));
+                        //    writer.Write(byteBuilder.ToString());
+                        //    byteBuilder.Clear();
+                        //    charCode.Remove(0, length);
+                        //}
                     }
-                    lastByteLength = byteBuilder.Length < 8 ? byteBuilder.Length : 8;
-                    while (byteBuilder.Length<8)
-                    {
-                        byteBuilder.Append(0);
-                    }
-                    writer.Write(byteBuilder.ToString());
-                    byteBuilder.Clear();
                 }
+                lastByteLength = byteBuilder.Length;
+                while (byteBuilder.Length < 8)
+                {
+                    byteBuilder.Append(0);
+                }
+                byte lastByte = Convert.ToByte(byteBuilder.ToString().Substring(0, 8), 2);
+                byteListToWrite.Add(lastByte);
+                byteBuilder.Clear();
             }
+            File.WriteAllBytes(EncodedFilePath+".bin", byteListToWrite.ToArray());
             return lastByteLength;
         }
 
